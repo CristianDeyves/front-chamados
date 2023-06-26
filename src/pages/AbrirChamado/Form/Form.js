@@ -102,52 +102,56 @@ const Form = () => {
 
   const handleEquipamentoChange = (e) => {
     setEquipamento(e.target.value);
+    buscarControle()
   };
 
   
   const buscarControle = async function obterControleControlePorId(){
-      try {
-          console.log('entrei')
-          await axios.get(`http://localhost:3030/listarControle/` + estacaoTrabalho).then(response=>{
-            setControle(response.data)
-          })
-  
-      } catch (error) {
-          return error
-
-      }
-  
-  }
-
-  async function criarChamado(){    
-    console.log('imprimir controle')
-    console.log(controle)
-    const body = {
-      nome:nome,
-      setor:controle.setor,
-      subsetor:controle.subsetor,
-      ilha:controle.ilha,
-      estacaotrabalho:estacaoTrabalho,
-      equipamentocomdefeito:equipamento,
-      equipamentotombo:equipamentotombo,
-      equipamentonumeroserie:equipamentonumeroserie,
-      descricao:descricao,
-      equipesuport:"HELDER"
+    try {
+      console.log('entrei');
+      const response = await axios.get(`http://localhost:3030/listarControle/` + estacaoTrabalho);
+      setControle(response.data);
+    } catch (error) {
+      console.error(error);
     }
-    console.log(body)
-    await axios.post("http://localhost:3032/criarChamado/", body).then(response=>{
-      console.log(response.data)
-    });
-         
+  
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    buscarControle();
-    criarChamado()
-     
-  } 
+  async function criarChamado() {
+    console.log('imprimir controle');
+    console.log(controle);
+    
+    // Certifique-se de que o controle está definido antes de continuar
+    if (controle) {
+      const body = {
+        nome: nome,
+        setor: controle.setor,
+        subsetor: controle.subsetor,
+        ilha: controle.ilha,
+        estacaotrabalho: estacaoTrabalho,
+        equipamentocomdefeito: equipamento,
+        equipamentotombo: equipamentotombo,
+        equipamentonumeroserie: equipamentonumeroserie,
+        descricao: descricao,
+        equipesuport: "HELDER"
+      };
+  
+      console.log(body);
+      
+      try {
+        const response = await axios.post("http://localhost:3032/criarChamado/", body);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    criarChamado();
+  }
+  
   return (
     <FormContainer>
       <FormStyle onSubmit={handleSubmit}>
@@ -179,7 +183,7 @@ const Form = () => {
           />
         </div>
         <div>
-          <Label htmlFor="equipamento">Equipamento:</Label>
+          <Label htmlFor="equipamento" >Equipamento:</Label>
           <Select
             id="equipamento"
             value={equipamento}
