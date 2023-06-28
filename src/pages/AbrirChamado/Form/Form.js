@@ -88,6 +88,17 @@ const Form = () => {
   const [equipamentonumeroserie, setEquipamentonumeroserie] = useState('');
   const [controle, setControle] = useState({});
 
+  const buscarControle = async function obterControleControlePorId(){
+    try {
+      console.log('entrei');
+      const response = await axios.get(`http://localhost:3030/listarControle/` + estacaoTrabalho);
+      setControle(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  
+  }
+
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -104,18 +115,6 @@ const Form = () => {
     setEquipamento(e.target.value);
     buscarControle()
   };
-
-  
-  const buscarControle = async function obterControleControlePorId(){
-    try {
-      console.log('entrei');
-      const response = await axios.get(`http://localhost:3030/listarControle/` + estacaoTrabalho);
-      setControle(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  
-  }
 
   async function criarChamado() {
     console.log('imprimir controle');
