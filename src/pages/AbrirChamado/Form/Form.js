@@ -129,18 +129,34 @@ const Form = () => {
         ilha: controle.ilha,
         estacaotrabalho: estacaoTrabalho,
         equipamentocomdefeito: equipamento,
-        equipamentotombo: equipamentotombo,
-        equipamentonumeroserie: equipamentonumeroserie,
+        /* equipamentotombo: equipamentotombo,
+        equipamentonumeroserie: equipamentonumeroserie, */
         descricao: descricao,
-        equipesuport: "HELDER"
+        equipesuport: ""
       };
+
+
+      if ( equipamento === "cpu" ) {
+        body.equipamentotombo = controle.cputombo;
+        body.equipamentonumeroserie = controle.cpunumeroserie;
+      } else if ( equipamento === "monitor1" ) {
+        body.equipamentotombo = controle.monitor1tombo;
+        body.equipamentonumeroserie = controle.monitor1numeroserie;
+      } else if ( equipamento === "monitor2" ) {
+        body.equipamentotombo = controle.monitor2tombo;
+        body.equipamentonumeroserie = controle.monitor2numeroserie;
+      } else if ( equipamento === "impressora" ) {
+        body.equipamentotombo = controle.impressoratombo;
+        body.equipamentonumeroserie = "-----------------";
+      }
   
       console.log(body);
       
       try {
         const response = await axios.post("http://localhost:3032/criarChamado/", body);
         console.log(response.data);
-      } catch (error) {
+      }
+      catch (error) {
         console.error(error);
       }
     }
